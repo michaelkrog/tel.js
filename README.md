@@ -1,8 +1,8 @@
-angular-input-tel
+tel.js - An input[tel] directive for AngularJS.
 =================
 
-A directive for input type 'tel' for formatting and parsing international phone numbers.
-Based on a subset of metadata from libphonnumber.
+A directive for input type 'tel' that formats and parses international phone numbers.
+Based on a subset of metadata from libphonenumber.
 
 ### USAGE ###
 ```html
