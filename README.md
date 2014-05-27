@@ -14,7 +14,7 @@ Based on a subset of metadata from libphonenumber.
         <script src="tel_meta.js"></script>
 
     </head>
-    <body ng-init="number='45'">
+    <body ng-init="number='4512341234'">
         <input type="tel" international="true" ng-model="number">
     </body>
 </html>
