@@ -10,7 +10,6 @@ __FILTER__
 ```javascript
 var formattedNumber = $filter('telephone')('4512341234');
 ```
-
 Result: +45 12 34 12 34
 
 __DIRECTIVE__
@@ -28,6 +27,5 @@ __DIRECTIVE__
         <input type="tel" international="true" ng-model="number">
     </body>
 </html>
-
 ```
 
