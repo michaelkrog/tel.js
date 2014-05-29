@@ -61,15 +61,11 @@ teljs.filter('telephone', function() {
                 var format = international && entry[3] ? entry[3] : entry[2];
                 if(international) {
                     number = nationalNumber;
-                    alert('1:'+number);
                     if(nationalPrefix && number.substr(0, nationalPrefix.length) === nationalPrefix) {
                         number = number.substr(nationalPrefix.length);
                     }
-                    alert('2:'+number);
                     number = number.replace(new RegExp(entry[0]), format);
-                    alert('3:'+number);
                     number = '+' + countryCode + ' ' + number;
-                    alert('4:'+number);
                 } else {
                     throw "national formatting not support yet.";
                 }
