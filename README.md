@@ -1,10 +1,19 @@
 tel.js - An input[tel] directive for AngularJS.
 =================
 
-A directive for input type 'tel' that formats and parses international phone numbers.
+A filter and a directive for input type 'tel' that formats and parses international phone numbers.
 Based on a subset of metadata from libphonenumber.
 
 ### USAGE ###
+
+__FILTER__
+```javascript
+var formattedNumber = $filter('telephone')('4512341234');
+```
+Result: +45 12 34 12 34
+
+__DIRECTIVE__
+
 ```html
 <!DOCTYPE html>
 <html ng-app="teljs">
@@ -18,6 +27,5 @@ Based on a subset of metadata from libphonenumber.
         <input type="tel" international="true" ng-model="number">
     </body>
 </html>
-
 ```
 
