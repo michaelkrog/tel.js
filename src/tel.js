@@ -1,19 +1,147 @@
+/*global angular */
 var teljs = angular.module('teljs',[]);
-teljs.directive('input', function () {
+teljs.trimNumber = function(value) {
+    if(value) {
+        return value.replace(/[\+\s\-\(\)]/g, '');
+    } else {
+        return value;
+    }
+};
+
+teljs.filter('telephone', function() {
+    
+    var countryCodes = teljs.countryAreaCodes;
+            
+    // [<areacode>, <nationalPrefix>, [[<formatPattern>, <leadingDigits<, <format>, <intlFormat>],...]]
+    var countryMetaData = teljs.meta;
+    
+    var regionsFromNumber = function(e164) {
+        var regions, key, value;
+        for(key in countryCodes) {
+            value = countryCodes[key];
+            var reg = new RegExp('^'+key),
+            ok;
+
+            ok = reg.exec(e164);
+
+            if(ok) {
+                regions = value;
+                break;
+            }
+        }
+
+        return regions;
+    };
+
+    var formatNumberForRegion = function(region, nationalNumber, mode) {
+        var metaData = countryMetaData[region],
+            countryCode = metaData[0],
+            nationalPrefix = metaData[1],
+            numberFormats = metaData[2],
+            number, international = (mode === 'e164'),
+            entry, i, matchNumber, matchLeadingDigits;
+
+        for(i = 0;i<numberFormats.length;i++) {
+            entry = numberFormats[i];
+            matchNumber = new RegExp('^'+entry[0]).exec(nationalNumber);
+
+            if(entry[1] === null) {
+                matchLeadingDigits = true;
+            } else if(angular.isString(entry[1])) {
+                matchLeadingDigits = new RegExp('^'+entry[1]).exec(nationalNumber);
+            } else if(angular.isArray(entry[1])) {
+                angular.forEach(entry[1], function(lead) {
+                    if(new RegExp('^'+lead).exec(nationalNumber)) {
+                        matchLeadingDigits = true;
+                    }
+                });
+            }
+
+            if(matchNumber && matchLeadingDigits) {
+                var format = international && entry[3] ? entry[3] : entry[2];
+                if(international) {
+                    number = nationalNumber;
+                    alert('1:'+number);
+                    if(nationalPrefix && number.substr(0, nationalPrefix.length) === nationalPrefix) {
+                        number = number.substr(nationalPrefix.length);
+                    }
+                    alert('2:'+number);
+                    number = number.replace(new RegExp(entry[0]), format);
+                    alert('3:'+number);
+                    number = '+' + countryCode + ' ' + number;
+                    alert('4:'+number);
+                } else {
+                    throw "national formatting not support yet.";
+                }
+                break;
+            }
+        };
+        return number;
+    };
+
+    
+    return function(input, mode, defaultAreaCode) {
+        
+        var regions, trimmedNumber, number, nationalNumber, i, countryCode, region, nationalPrefix;
+        mode = mode ? mode : 'e164';
+        trimmedNumber = teljs.trimNumber(input);
+        
+        if(defaultAreaCode && defaultAreaCode !== '') {
+            trimmedNumber = defaultAreaCode + '' + trimmedNumber;
+            regions = regionsFromNumber(trimmedNumber);
+
+            if(regions) {
+                for(i=0;i<regions.length;i++) {
+                    region = regions[i];
+                    countryCode = countryMetaData[region][0];
+                    nationalPrefix = countryMetaData[region][1];
+                    nationalNumber = trimmedNumber.substr(countryCode.length);
+                    if(nationalPrefix && nationalNumber.substr(0, nationalPrefix.length) !== nationalPrefix) {
+                        nationalNumber = nationalPrefix + '' + nationalNumber;
+                    }
+                    number = formatNumberForRegion(region, nationalNumber, mode);
+                    if(number) break;
+                }
+            }
+            if(number) return number;
+        }   
+        
+        regions = regionsFromNumber(trimmedNumber);
+
+        if(regions) {
+            for(i=0;i<regions.length;i++) {
+                region = regions[i];
+                countryCode = countryMetaData[region][0];
+                nationalPrefix = countryMetaData[region][1];
+                nationalNumber = trimmedNumber.substr(countryCode.length);
+                if(nationalPrefix && nationalNumber.substr(0, nationalPrefix.length) !== nationalPrefix) {
+                    nationalNumber = nationalPrefix + '' + nationalNumber;
+                }
+                number = formatNumberForRegion(region, nationalNumber, mode);
+                if(number) break;
+            }
+        }
+
+        
+        
+        return number;
+
+
+    };
+});
+
+teljs.directive('input', function ($filter) {
     return {
         restrict: 'E', // only activate on element attribute
         require: '?ngModel', // get a hold of NgModelController
         scope: {
             international: '@',
+            defaultAreaCode: '@'
         },
         link: function(scope, element, attrs, ngModel) {
             if (attrs.type !== 'tel') return;
             scope.international = 'true' === scope.international;
-            scope.countryCodes = teljs.countryAreaCodes;
-
-            // [<areacode>, <nationalPrefix>, [[<formatPattern>, <leadingDigits<, <format>, <intlFormat>],...]]
-            scope.countryMetaData = teljs.meta;
-
+            
             element.on('blur', function() {
                 if(ngModel.$valid) {
                     ngModel.$setViewValue(scope.formatNumber(ngModel.$modelValue));
@@ -21,76 +149,10 @@ teljs.directive('input', function () {
                 }
             });
 
-            scope.trimNumber = function(value) {
-                if(value) {
-                    return value.replace(/[\+\s\-\(\)]/g, '');
-                } else {
-                    return value;
-                }
+            scope.doFormatNumber = function(number) {
+                return $filter('telephone')(number, scope.international ? 'e164' : 'national', scope.defaultAreaCode);
             };
-
-
-            scope.doFormatNumber = function(orgNumber) {
-                var regions, number, trimNumber;
-                angular.forEach(scope.countryCodes, function(value, key) {
-                    var reg = new RegExp('^'+key),
-                    ok, tmp;
-
-                    tmp = scope.trimNumber(orgNumber);
-                    ok = reg.exec(tmp);
-
-                    if(ok) {
-                        trimNumber = tmp.substring(key.length);
-                        regions = value;
-                        return false;
-                    }
-                });
-
-                angular.forEach(regions, function(region) {
-                    var metaData = scope.countryMetaData[region],
-                    countryCode = metaData[0],
-                    nationalPrefix = metaData[1],
-                    numberFormats = metaData[2];
-
-                    angular.forEach(numberFormats, function(entry) {
-                        var matchNumber, matchLeadingDigits;
-
-                        matchNumber = new RegExp('^'+entry[0]).exec(trimNumber);
-
-                        if(entry[1] === null) {
-                            matchLeadingDigits = true;
-                        } else if(angular.isString(entry[1])) {
-                            matchLeadingDigits = new RegExp('^'+entry[1]).exec(trimNumber);
-                        } else if(angular.isArray(entry[1])) {
-                            angular.forEach(entry[1], function(lead) {
-                                if(new RegExp('^'+lead).exec(trimNumber)) {
-                                    matchLeadingDigits = true;
-                                    return false;
-                                }
-                            });
-                        }
-
-                        if(matchNumber && matchLeadingDigits) {
-                            var format = scope.international && entry[3] ? entry[3] : entry[2];
-                            if(scope.international) {
-                                number = trimNumber;
-                                if(nationalPrefix && number.substr(0, nationalPrefix.length) === nationalPrefix) {
-                                    number = number.substr(nationalPrefix.length);
-                                }
-
-                                number = number.replace(new RegExp(entry[0]), format);
-                                number = '+' + countryCode + ' ' + number;
-                            } else {
-                                throw "national formatting not support yet.";
-                            }
-                            return false;
-                        }
-                    });
-                });
-
-                return number;
-            };
-
+            
             scope.formatNumber = function(value) {
                 var result = scope.doFormatNumber(value);
                 if(!result) {
@@ -102,7 +164,7 @@ teljs.directive('input', function () {
 
             scope.parseNumber = function(value) {
                 var valid = false, result, formatResult;
-                value = value ? scope.trimNumber(value) : value;
+                value = value ? teljs.trimNumber(value) : value;
                 formatResult = scope.doFormatNumber(value);
 
                 if(formatResult === undefined) {
