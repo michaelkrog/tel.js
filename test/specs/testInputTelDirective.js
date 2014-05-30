@@ -55,7 +55,7 @@ describe('Unit testing teljs directive', function() {
         var element = $compile('<input type="tel" international="false" default-area-code="46" ng-model="number">')($rootScope);
         $rootScope.$digest();
 
-        expect(element.val()).toContain('011 495 52 00');
+        expect(element.val()).toContain('011-495 52 00');
     });
 
     it('Formats a faroese number correctly', function() {
