@@ -72,10 +72,11 @@ teljs.filter('telephone', function() {
                     if(nationalPrefix) {
                         number = nationalPrefix + '' + number;
                     }
+                    number = number.replace(new RegExp(entry[0]), format);
                 }
                 break;
             }
-        };
+        }
         return number;
     };
 
@@ -85,7 +86,6 @@ teljs.filter('telephone', function() {
         var regions, trimmedNumber, defaultGeneratedNumber, number, nationalNumber, i, countryCode, region, nationalPrefix;
         mode = mode ? mode : 'e164';
         trimmedNumber = teljs.trimNumber(input);
-        
         if(defaultAreaCode && defaultAreaCode !== '') {
             defaultGeneratedNumber = defaultAreaCode + '' + trimmedNumber;
             regions = regionsFromNumber(defaultGeneratedNumber);
@@ -140,7 +140,12 @@ teljs.directive('input', function ($filter) {
         },
         link: function(scope, element, attrs, ngModel) {
             if (attrs.type !== 'tel') return;
-            scope.international = 'true' === scope.international;
+            
+            if(scope.international === 'true') {
+                scope.mode = 'e164';
+            } else {
+                scope.mode = 'national';
+            }
             
             element.on('blur', function() {
                 if(ngModel.$valid) {
@@ -150,7 +155,7 @@ teljs.directive('input', function ($filter) {
             });
 
             scope.doFormatNumber = function(number) {
-                return $filter('telephone')(number, scope.international ? 'e164' : 'national', scope.defaultAreaCode);
+                return $filter('telephone')(number, scope.mode, scope.defaultAreaCode);
             };
             
             scope.formatNumber = function(value) {
@@ -178,7 +183,7 @@ teljs.directive('input', function ($filter) {
                 ngModel.$setValidity('phoneNumber', valid);
                 
                 if(result) {
-                    return scope.international ? '+' + result : result;
+                    return scope.mode === 'e164' ? '+' + result : result;
                 } else {
                     return undefined;
                 }

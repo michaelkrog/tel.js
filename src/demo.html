@@ -8,8 +8,23 @@
         <script src="tel_meta.js"></script>
 
     </head>
-    <body ng-init="number=''">
-        <input type="tel" international="true" ng-model="number" default-area-code="45"><br>
-        Result: {{number}}
+    <body>
+        <p ng-init="numberDK=''">
+            Danish National Number<br>
+            <input type="tel" international="false" ng-model="numberDK" default-area-code="45"><br>
+            Result: {{numberDK}}
+        </p>
+        
+        <p ng-init="numberSE=''">
+            Swedish National Number<br>
+            <input type="tel" international="false" ng-model="numberSE" default-area-code="46"><br>
+            Result: {{numberSE}}
+        </p>
+        
+        <p ng-init="numberInt=''">
+            International Number<br>
+            <input type="tel" international="true" ng-model="numberInt" ><br>
+            Result: {{numberInt}}
+        </p>
     </body>
 </html>

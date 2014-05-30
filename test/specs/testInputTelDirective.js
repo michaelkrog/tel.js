@@ -10,6 +10,22 @@ describe('Unit testing teljs directive', function() {
       $rootScope = _$rootScope_;
     }));
 
+    it('Formats a danish national number correctly', function() {
+        $rootScope.number = '12341234';
+        var element = $compile('<input type="tel" international="false" default-area-code="45" ng-model="number">')($rootScope);
+        $rootScope.$digest();
+
+        expect(element.val()).toContain('12 34 12 34');
+    });
+    
+    it('Formats a danish national number correctly to international format using default-area-code', function() {
+        $rootScope.number = '12341234';
+        var element = $compile('<input type="tel" international="true" default-area-code="45" ng-model="number">')($rootScope);
+        $rootScope.$digest();
+
+        expect(element.val()).toContain('+45 12 34 12 34');
+    });
+    
     it('Formats a danish number correctly', function() {
         $rootScope.number = '4512341234';
         var element = $compile('<input type="tel" international="true" ng-model="number">')($rootScope);
@@ -32,6 +48,14 @@ describe('Unit testing teljs directive', function() {
         $rootScope.$digest();
 
         expect(element.val()).toContain('+46 11 495 52 00');
+    });
+    
+    it('Formats a swedish national number correctly', function() {
+        $rootScope.number = '0114955200';
+        var element = $compile('<input type="tel" international="false" default-area-code="46" ng-model="number">')($rootScope);
+        $rootScope.$digest();
+
+        expect(element.val()).toContain('011 495 52 00');
     });
 
     it('Formats a faroese number correctly', function() {
