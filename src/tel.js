@@ -176,7 +176,7 @@ teljs.directive('input', function ($filter) {
                     result = undefined;
                     valid = false;
                 } else {
-                    result = value;
+                    result = teljs.trimNumber(formatResult);
                     valid = true;
                 }
 

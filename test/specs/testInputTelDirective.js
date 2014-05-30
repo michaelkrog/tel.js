@@ -18,6 +18,14 @@ describe('Unit testing teljs directive', function() {
         expect(element.val()).toContain('12 34 12 34');
     });
     
+        it('Formats a danish international number as national correctly', function() {
+        $rootScope.number = '+4512341234';
+        var element = $compile('<input type="tel" international="false" default-area-code="45" ng-model="number">')($rootScope);
+        $rootScope.$digest();
+
+        expect(element.val()).toContain('12 34 12 34');
+    });
+    
     it('Formats a danish national number correctly to international format using default-area-code', function() {
         $rootScope.number = '12341234';
         var element = $compile('<input type="tel" international="true" default-area-code="45" ng-model="number">')($rootScope);
