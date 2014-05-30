@@ -23,7 +23,7 @@ describe('Unit testing teljs directive', function() {
         var element = $compile('<input type="tel" international="true" ng-model="number">')($rootScope);
         $rootScope.$digest();
 
-        expect(element.val()).toContain('+46 114 95 52 00');
+        expect(element.val()).toContain('+46 11 495 52 00');
     });
 
     it('Formats a swedish number with needless areacode correctly', function() {
@@ -31,7 +31,7 @@ describe('Unit testing teljs directive', function() {
         var element = $compile('<input type="tel" international="true" ng-model="number">')($rootScope);
         $rootScope.$digest();
 
-        expect(element.val()).toContain('+46 114 95 52 00');
+        expect(element.val()).toContain('+46 11 495 52 00');
     });
 
     it('Formats a faroese number correctly', function() {

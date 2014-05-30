@@ -21,12 +21,12 @@ describe('Unit testing teljs filter', function() {
 
     it('Formats a swedish number correctly', function() {
         var number = $filter('telephone')('46114955200');
-        expect(number).toContain('+46 114 95 52 00');
+        expect(number).toContain('+46 11 495 52 00');
     });
 
     it('Formats a swedish number with needless areacode correctly', function() {
         var number = $filter('telephone')('460114955200');
-        expect(number).toContain('+46 114 95 52 00');
+        expect(number).toContain('+46 11 495 52 00');
     });
 
     it('Formats a faroese number correctly', function() {

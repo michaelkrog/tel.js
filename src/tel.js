@@ -41,9 +41,13 @@ teljs.filter('telephone', function() {
             number, international = (mode === 'e164'),
             entry, i, matchNumber, matchLeadingDigits;
 
+        if(nationalPrefix && nationalNumber.substr(0, nationalPrefix.length) === nationalPrefix) {
+            nationalNumber = nationalNumber.substr(nationalPrefix.length);
+        }
+        
         for(i = 0;i<numberFormats.length;i++) {
             entry = numberFormats[i];
-            matchNumber = new RegExp('^'+entry[0]).exec(nationalNumber);
+            matchNumber = new RegExp('^'+entry[0]+'$').exec(nationalNumber);
 
             if(entry[1] === null) {
                 matchLeadingDigits = true;
@@ -61,13 +65,13 @@ teljs.filter('telephone', function() {
                 var format = international && entry[3] ? entry[3] : entry[2];
                 if(international) {
                     number = nationalNumber;
-                    if(nationalPrefix && number.substr(0, nationalPrefix.length) === nationalPrefix) {
-                        number = number.substr(nationalPrefix.length);
-                    }
                     number = number.replace(new RegExp(entry[0]), format);
                     number = '+' + countryCode + ' ' + number;
                 } else {
-                    throw "national formatting not support yet.";
+                    number = nationalNumber;
+                    if(nationalPrefix) {
+                        number = nationalPrefix + '' + number;
+                    }
                 }
                 break;
             }
@@ -78,20 +82,20 @@ teljs.filter('telephone', function() {
     
     return function(input, mode, defaultAreaCode) {
         
-        var regions, trimmedNumber, number, nationalNumber, i, countryCode, region, nationalPrefix;
+        var regions, trimmedNumber, defaultGeneratedNumber, number, nationalNumber, i, countryCode, region, nationalPrefix;
         mode = mode ? mode : 'e164';
         trimmedNumber = teljs.trimNumber(input);
         
         if(defaultAreaCode && defaultAreaCode !== '') {
-            trimmedNumber = defaultAreaCode + '' + trimmedNumber;
-            regions = regionsFromNumber(trimmedNumber);
+            defaultGeneratedNumber = defaultAreaCode + '' + trimmedNumber;
+            regions = regionsFromNumber(defaultGeneratedNumber);
 
             if(regions) {
                 for(i=0;i<regions.length;i++) {
                     region = regions[i];
                     countryCode = countryMetaData[region][0];
                     nationalPrefix = countryMetaData[region][1];
-                    nationalNumber = trimmedNumber.substr(countryCode.length);
+                    nationalNumber = defaultGeneratedNumber.substr(countryCode.length);
                     if(nationalPrefix && nationalNumber.substr(0, nationalPrefix.length) !== nationalPrefix) {
                         nationalNumber = nationalPrefix + '' + nationalNumber;
                     }
@@ -172,7 +176,12 @@ teljs.directive('input', function ($filter) {
                 }
 
                 ngModel.$setValidity('phoneNumber', valid);
-                return result;
+                
+                if(result) {
+                    return scope.international ? '+' + result : result;
+                } else {
+                    return undefined;
+                }
             };
 
             ngModel.$formatters.push(scope.formatNumber);
