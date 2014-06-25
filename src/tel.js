@@ -141,7 +141,7 @@ teljs.directive('input', function ($filter) {
         link: function(scope, element, attrs, ngModel) {
             if (attrs.type !== 'tel') return;
             
-            if(scope.international === 'true') {
+            if(scope.international !== 'false') {
                 scope.mode = 'e164';
             } else {
                 scope.mode = 'national';
