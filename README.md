@@ -26,7 +26,7 @@ __DIRECTIVE__
 
     </head>
     <body ng-init="number='4512341234'">
-        <input type="tel" international="true" ng-model="number">
+        <input type="tel" ng-model="number">
     </body>
 </html>
 ```
