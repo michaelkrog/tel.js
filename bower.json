@@ -5,14 +5,14 @@
         "angular-mocks": "1.2.16"
     },
     "ignore": [
-    ".bowerrc",
-    ".gitignore",
-    ".travis.yml",
-    "bower_components/**",
-    "init_repo.sh",
-    "karma.conf.js",
-    "test/**"
-  ],
-    main: "src/tel.js"
+        ".bowerrc",
+        ".gitignore",
+        ".travis.yml",
+        "bower_components/**",
+        "init_repo.sh",
+        "karma.conf.js",
+        "test/**"
+    ],
+    "main": "src/tel.js"
 
 }
