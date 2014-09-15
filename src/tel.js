@@ -99,16 +99,14 @@ function telephoneFilter() {
                         if(international) {
                             number = nationalNumber;
                             number = number.replace(new RegExp(entry[1]), format);
-                            number = new String('+' + countryCode + ' ' + number);
+                            number = '+' + countryCode + ' ' + number;
                         } else {
                             number = nationalNumber;
                             if(nationalPrefix) {
                                 number = nationalPrefix + '' + number;
                             }
-                            new String(number = number.replace(new RegExp(entry[1]), format));
+                            number = number.replace(new RegExp(entry[1]), format);
                         }
-                        number.$countryCode = region;
-                        number.$range = range;
                         break;
                     }
                 }

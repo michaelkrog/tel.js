@@ -12,9 +12,7 @@ __FILTER__
 ```javascript
 var formattedNumber = $filter('telephone')('4512341234');
 ```
-formattedNumber: +45 12 34 12 34  
-formattedNumber.$country: DK
-formattedNumber.$range: fixedLine
+formattedNumber: +45 12 34 12 34
 
 
 __DIRECTIVE__

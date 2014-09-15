@@ -12,57 +12,41 @@ describe('Unit testing teljs filter', function() {
     it('Formats a danish number correctly', function() {
         var number = $filter('telephone')('4522334455');
         expect(number).toContain('+45 22 33 44 55');
-        expect(number.$countryCode).toContain('DK');
-        expect(number.$range).toContain('fixedLine');
     });
     
     it('Formats a danish number correctly using default area code', function() {
         var number = $filter('telephone')('46152323', 'e164', '45');
         expect(number).toContain('+45 46 15 23 23');
-        expect(number.$countryCode).toContain('DK');
-        expect(number.$range).toContain('fixedLine');
     });
 
     it('Formats a swedish number correctly', function() {
         var number = $filter('telephone')('46114955200');
         expect(number).toContain('+46 11 495 52 00');
-        expect(number.$countryCode).toContain('SE');
-        expect(number.$range).toContain('fixedLine');
     });
     
     it('Formats another swedish number correctly', function() {
         var number = $filter('telephone')('4612012345');
         expect(number).toContain('+46 120 123 45');
-        expect(number.$countryCode).toContain('SE');
-        expect(number.$range).toContain('fixedLine');
     });
 
     it('Formats a swedish mobile number correctly', function() {
         var number = $filter('telephone')('46701234567');
         expect(number).toContain('+46 70 123 45');
-        expect(number.$countryCode).toContain('SE');
-        expect(number.$range).toContain('mobile');
     });
 
     it('Formats a swedish number with needless areacode correctly', function() {
         var number = $filter('telephone')('460114955200');
         expect(number).toContain('+46 11 495 52 00');
-        expect(number.$countryCode).toContain('SE');
-        expect(number.$range).toContain('fixedLine');
     });
 
     it('Formats a faroese number correctly', function() {
         var number = $filter('telephone')('298208080');
         expect(number).toContain('+298 208080');
-        expect(number.$countryCode).toContain('FO');
-        expect(number.$range).toContain('fixedLine');
     });
     
     it('Formats a faroese mobile number correctly', function() {
         var number = $filter('telephone')('298218080');
         expect(number).toContain('+298 218080');
-        expect(number.$countryCode).toContain('FO');
-        expect(number.$range).toContain('mobile');
     });
     
     
