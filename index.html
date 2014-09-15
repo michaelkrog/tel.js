@@ -39,11 +39,6 @@
                     <p ng-init="number='+4522334455'">
                         <form name="telform">
                             <input name="number" type="tel" international="true" ng-model="number"><span style="color:red" ng-if="!telform.number.$valid">invalid</span>
-                            <div ng-if="telform.number.$valid">
-                                <div>number: {{number}}</div>
-                                <div>number.$country: {{number.$country}}</div>
-                                <div>number.$range: {{number.$range}}</div>
-                            </div>
 
                         </form>
                     </p>
