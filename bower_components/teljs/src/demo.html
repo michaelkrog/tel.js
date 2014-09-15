@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html ng-app="teljs">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>TelJS Demo</title>
+    <script type="text/javascript" src="../bower_components/angular/angular.js"></script>
+    <script src="tel.js"></script>
+    <!--script src="tel_meta.js"></script-->
+    <script src="metadatalite.js"></script>
+
+</head>
+
+<body>
+    <form name="numberform">
+        <p ng-init="numberDK=''">
+            Danish National Number
+            <br>
+            <input name="numberDK" type="tel" international="false" ng-model="numberDK" default-area-code="45">
+            <span ng-if="numberform.numberDK.$valid">valid</span>
+            <br>Result: {{numberDK}}
+        </p>
+
+        <p ng-init="numberSE=''">
+            Swedish National Number
+            <br>
+            <input name="numberSE" type="tel" international="false" ng-model="numberSE" default-area-code="46">
+            <span ng-if="numberform.numberSE.$valid">valid</span>
+            <br>Result: {{numberSE}}
+        </p>
+
+        <p ng-init="numberInt=''">
+            International Number
+            <br>
+            <input name="numberInt" type="tel" international="true" ng-model="numberInt">
+            <span ng-if="numberform.numberInt.$valid">valid</span>
+            <br>Result: {{numberInt}}
+        </p>
+        
+    </form>
+</body>
+
+</html>
