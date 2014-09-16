@@ -60,6 +60,14 @@ describe('Unit testing teljs directive', function() {
 
         expect(element.val()).toContain('+46 11 495 52 00');
     });
+    
+    it('Formats a swedish number correctly when default areacode is danish', function() {
+        $rootScope.number = '46114955200';
+        var element = $compile('<input type="tel" international="true" default-area-code="45" ng-model="number">')($rootScope);
+        $rootScope.$digest();
+
+        expect(element.val()).toContain('+46 11 495 52 00');
+    });
 
     it('Formats a swedish number with needless areacode correctly', function() {
         $rootScope.number = '460114955200';
