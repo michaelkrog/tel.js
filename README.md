@@ -8,19 +8,19 @@ Demo: http://michaelkrog.github.io/tel.js/
 
 #FILTER#
 
-##Usage##
+###Usage###
 
-###In HTML Template Binding###
+####In HTML Template Binding####
 ```html
 {{phonenumber_expression | telephone}}
 ```
 
-###In Javascript###
+####In Javascript####
 ```javascript
 $filter('telephone')(phonenumber, mode, defaultAreaCode);
 ```
 
-##Arguments##
+###Arguments###
 
 Param                      | Type      | Details
 ---------------------------|-----------|----------------------
@@ -30,7 +30,7 @@ defaultAreaCode (optional) | string    | If specified phonenumbers from this are
 
 #DIRECTIVE#
 
-##Usage##
+###Usage###
 ```html
 <input type="tel" 
     ng-model="" 
@@ -38,7 +38,7 @@ defaultAreaCode (optional) | string    | If specified phonenumbers from this are
     [default-area-code=""]>
 ```
 
-##Arguments##
+###Arguments###
 Param                      | Type      | Details
 ---------------------------|-----------|----------------------
 ngModel                    | string    | Assignable angular expression to data-bind to.
