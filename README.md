@@ -46,6 +46,16 @@ international (optional)   | string    | Wether number should be formatted as 'e
 defaultAreaCode (optional) | string    | If specified phonenumbers from this area will be formatted even without an areacode.
 
 
+#Install#
+
+You can install tel.js via bower like this:
+```
+bower install teljs --save
+```
+
+Alternatively you can download the full source as a ZIP file from [Github](https://github.com/michaelkrog/tel.js/archive/master.zip).
+
+
 #FILE FORMAT#
 The metadatalite.js file is taken directly from the libphonenumber repository. The format is defined by Google protobuf definitions and is therefore not very human readable. The following is a partial definition of the format - enough to build tel.js around the file.
 
