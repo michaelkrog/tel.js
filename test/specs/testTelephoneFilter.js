@@ -9,6 +9,11 @@ describe('Unit testing teljs filter', function() {
       $filter = _$filter_;
     }));
 
+    it('Returns raw output when formatting invalid number', function() {
+        var number = $filter('telephone')('+45123456');
+        expect(number).toContain('+45123456');
+    });
+    
     it('Formats a danish number correctly', function() {
         var number = $filter('telephone')('4522334455');
         expect(number).toContain('+45 22 33 44 55');
