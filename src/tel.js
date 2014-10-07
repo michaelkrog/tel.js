@@ -181,12 +181,11 @@ function telephoneDirective($filter) {
     return {
         restrict: 'E', // only activate on element attribute
         require: '?ngModel', // get a hold of NgModelController
-        scope: {
-            international: '@',
-            defaultAreaCode: '@'
-        },
         link: function(scope, element, attrs, ngModel) {
             if (attrs.type !== 'tel') return;
+            
+            scope.international = attrs.international;
+            scope.defaultAreaCode = attrs.defaultAreaCode;
             
             if(scope.international !== 'false') {
                 scope.mode = 'e164';
