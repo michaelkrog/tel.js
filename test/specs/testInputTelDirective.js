@@ -93,5 +93,15 @@ describe('Unit testing teljs directive', function() {
         expect(element.val()).toContain('+298 208080');
     });
     
+    it('handles unset value correctly', function() {
+        var element = $compile('<input type="tel" international="true" ng-model="number">')($rootScope);
+        $rootScope.$digest();
+        expect(element.val()).toContain('');
+        
+        $rootScope.number = '298208080';
+        $rootScope.$digest();
+
+        expect(element.val()).toContain('+298 208080');
+    });
     
 });

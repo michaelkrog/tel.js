@@ -205,6 +205,10 @@ function telephoneDirective($filter) {
             };
             
             scope.formatNumber = function(value) {
+                if(!angular.isDefined(value)) {
+                    return '';
+                }
+                
                 var result = scope.doFormatNumber(value);
                 if(!result.valid) {
                     result = value;
@@ -238,7 +242,7 @@ function telephoneDirective($filter) {
 
             ngModel.$formatters.push(scope.formatNumber);
             ngModel.$parsers.push(scope.parseNumber);
-
+            
         }
     };
 }
