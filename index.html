@@ -35,14 +35,33 @@
                 <h3>
 <a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to Tel.js</h3>
                 <p>
-                    This is a simple demo of tel.js. The following input field is of type 'tel' and is therefore automatically formatted as a phone number. You can type in any valid phone number with countrycode(fx. +45 for Denmark) and it will automatically format it according to the country's formatting tradition. The phone number will also be validated so you can take advantage of the in Angulars forms.
+                    This is a simple demo of tel.js.
+                </p>
+                <p>
+                    The following input field is of type 'tel' and is formatted as a phone number. You can type in any valid phone number with countrycode(fx. +45 for Denmark, +46 for Sweden etc.) and it will automatically format it according to the country's formatting tradition.
+                    </p>
+                    <p>
+                        The phone number will also be validated so you can take advantage of the in Angulars forms. The validation even takes valid number ranges for the specific country into consideration.
+                    </p>
                     <p ng-init="number='+4522334455'">
                         <form name="telform">
-                            <input name="number" type="tel" international="true" ng-model="number"><span style="color:red" ng-if="!telform.number.$valid">invalid</span>
+                            <input name="number" type="tel" ng-model="number">
+                            <span style="color:red" ng-if="!telform.number.$valid">invalid</span>
+                            <span style="color:green" ng-if="telform.number.$valid">valid</span>
 
                         </form>
                     </p>
 
+                    <h4>Try this!</h4>
+                    <p>
+                        If you don't know any phone numbers that can test the number ranges for validation and formatting you can try these.
+                        </p>
+                        <p>
+                        '+45 22 33 44 55' is a valid Danish phone number but '+45 11 22 33 44' is not, because Denmark has no number ranges starting with '1'. 
+                    </p>
+                    <p>
+                    You should also try out swedish numbers which has a very diverse way of formatting numbers. Fx. '+46 120 123 45' and '+46 11 01 23 45' are both valid formats depending of the number range.
+                   </p>
 
             </section>
 
