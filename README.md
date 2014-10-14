@@ -17,7 +17,7 @@ Demo: http://michaelkrog.github.io/tel.js/
 
 ####In Javascript####
 ```javascript
-$filter('telephone')(phonenumber, mode, defaultAreaCode);
+$filter('telephone')(phonenumber, mode, defaultAreaCode, returnObject);
 ```
 
 ###Arguments###
@@ -27,7 +27,7 @@ Param                      | Type      | Details
 phonenumber                | string    | Phonenumber to format.
 mode (optional)            | string    | 'e164'(international) or 'national' format. Default 'e164'. 
 defaultAreaCode (optional) | string    | If specified phonenumbers from this area will be formatted even without an areacode.
-returnObject (optional)    | boolean   | If true the result will be an object of the form '{number:<number>,valid:<true|false>}'. If false or not specified the result will be the formatted result of the valid number, otherwise 'unspecified'.
+returnObject (optional)    | boolean   | If true the result will be an object of the form `{number:<number>,valid:<true|false>}`. If false or not specified the result will be the formatted result of the valid number, otherwise 'unspecified'.
 
 #DIRECTIVE#
 
