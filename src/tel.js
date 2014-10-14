@@ -5,7 +5,7 @@ if (window.goog === undefined) {
     goog = {
         provide: angular.noop
     };
-    
+
     i18n = {
         phonenumbers: {
             metadata: {
@@ -16,7 +16,7 @@ if (window.goog === undefined) {
 /* Fallback if google protocols is not defined - END*/
 
 function telephoneFilter() {
-    
+
     var countryCodes = i18n.phonenumbers.metadata.countryCodeToRegionCodeMap;
     var countryMetaData = i18n.phonenumbers.metadata.countryToMetadata;
     var validRangeMap = {
@@ -32,7 +32,7 @@ function telephoneFilter() {
         25: "uan",
         28: "voiceMail"
     };
-    
+
     var regionsFromNumber = function(e164) {
         var regions, key, value;
         for(key in countryCodes) {
@@ -62,11 +62,11 @@ function telephoneFilter() {
             entry, i, matchNumber, matchLeadingDigits, validRange = false, range;
 
         if(numberFormats) {
-            
+
             if(nationalPrefix && nationalNumber.substr(0, nationalPrefix.length) === nationalPrefix) {
                 nationalNumber = nationalNumber.substr(nationalPrefix.length);
             }
-            
+
             for (var key in validRangeMap) {
                 entry = metaData[key];
                 if(new RegExp('^('+entry[2]+')$').exec(nationalNumber)) {
@@ -114,7 +114,7 @@ function telephoneFilter() {
         }
         return number;
     };
-    
+
     var formatNumber = function(number, mode) {
         var regions = regionsFromNumber(number), region, i, countryCode, nationalPrefix, nationalNumber, result;
 
@@ -136,7 +136,7 @@ function telephoneFilter() {
 
     var wrapResult = function(input, number, returnObject) {
         var result;
-        
+
         if(returnObject === true) {
             if(!number) {
                 result = {
@@ -158,9 +158,9 @@ function telephoneFilter() {
         }
         return result;
     };
-    
+
     return function(input, mode, defaultAreaCode, returnObject) {
-        
+
         var trimmedNumber, defaultGeneratedNumber, number;
         mode = mode ? mode : 'e164';
         trimmedNumber = teljs.trimNumber(input);
@@ -168,8 +168,8 @@ function telephoneFilter() {
             defaultGeneratedNumber = defaultAreaCode + '' + trimmedNumber;
             number = formatNumber(defaultGeneratedNumber, mode);
             if(number) return wrapResult(input, number, returnObject);
-        }   
-        
+        }
+
         number = formatNumber(trimmedNumber, mode);
         return wrapResult(input, number, returnObject);
 
@@ -183,16 +183,16 @@ function telephoneDirective($filter) {
         require: '?ngModel', // get a hold of NgModelController
         link: function(scope, element, attrs, ngModel) {
             if (attrs.type !== 'tel') return;
-            
+
             scope.international = attrs.international;
             scope.defaultAreaCode = attrs.defaultAreaCode;
-            
+
             if(scope.international !== 'false') {
                 scope.mode = 'e164';
             } else {
                 scope.mode = 'national';
             }
-            
+
             element.on('blur', function() {
                 if(ngModel.$valid) {
                     ngModel.$setViewValue(scope.formatNumber(ngModel.$modelValue));
@@ -203,46 +203,39 @@ function telephoneDirective($filter) {
             scope.doFormatNumber = function(number) {
                 return $filter('telephone')(number, scope.mode, scope.defaultAreaCode, true);
             };
-            
+
             scope.formatNumber = function(value) {
-                if(!angular.isDefined(value)) {
+                if(!angular.isDefined(value) || value === '') {
                     return '';
                 }
-                
+
                 var result = scope.doFormatNumber(value);
                 if(!result.valid) {
-                    result = value;
+                    result.number = value;
                     ngModel.$setValidity('phoneNumber', false);
                 }
                 return result.number;
             };
 
             scope.parseNumber = function(value) {
-                var valid = false, result, formatResult;
+
+                var formatResult;
                 value = value ? teljs.trimNumber(value) : value;
                 formatResult = scope.doFormatNumber(value);
 
-                if(!formatResult.valid) {
-                    result = undefined;
-                    valid = false;
-                
-                } else {
-                    result = teljs.trimNumber(formatResult.number);
-                    valid = true;
+                if (!formatResult.valid && (value === '' || value === undefined)) {
+                    formatResult.valid = true;
+                    formatResult.number = '';
                 }
 
-                ngModel.$setValidity('phoneNumber', valid);
-                
-                if(result) {
-                    return scope.mode === 'e164' ? '+' + result : result;
-                } else {
-                    return undefined;
-                }
+                ngModel.$setValidity('phoneNumber', formatResult.valid);
+
+                return (scope.mode === 'e164' && formatResult.number !== '') ? '+' + formatResult.number : formatResult.number;
             };
 
             ngModel.$formatters.push(scope.formatNumber);
             ngModel.$parsers.push(scope.parseNumber);
-            
+
         }
     };
 }
