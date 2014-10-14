@@ -6,38 +6,61 @@ Based on metadata from libphonenumber.
 
 Demo: http://michaelkrog.github.io/tel.js/
 
-## USAGE ##
+#FILTER#
 
-__FILTER__
-```javascript
-var formattedNumber = $filter('telephone')('4512341234');
-```
-formattedNumber: +45 12 34 12 34  
-formattedNumber.$country: DK
-formattedNumber.$range: fixedLine
+###Usage###
 
-
-__DIRECTIVE__
-
+####In HTML Template Binding####
 ```html
-<!DOCTYPE html>
-<html ng-app="teljs">
-    <head>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular.min.js"></script>
-        <script src="tel.js"></script>
-        <script src="tel_meta.js"></script>
-
-    </head>
-    <body ng-init="number='4512341234'">
-        <input type="tel" ng-model="number">
-    </body>
-</html>
+{{phonenumber_expression | telephone}}
 ```
 
-##FILE FORMAT##
-The metadatalite.js file is taken directly from the libphonenumber repository. The format is defined by Google protobuf definitions and is there not very human readable. The following is a partly definition of the format - enough to build tel.js around the file.
+####In Javascript####
+```javascript
+$filter('telephone')(phonenumber, mode, defaultAreaCode);
+```
 
-__It is two Arrays__
+###Arguments###
+
+Param                      | Type      | Details
+---------------------------|-----------|----------------------
+phonenumber                | string    | Phonenumber to format.
+mode (optional)            | string    | 'e164'(international) or 'national' format. Default 'e164'. 
+defaultAreaCode (optional) | string    | If specified phonenumbers from this area will be formatted even without an areacode.
+returnObject (optional)    | boolean   | If true the result will be an object of the form '{number:<number>,valid:<true|false>}'. If false or not specified the result will be the formatted result of the valid number, otherwise 'unspecified'.
+
+#DIRECTIVE#
+
+###Usage###
+```html
+<input type="tel" 
+    ng-model="" 
+    [international=""]
+    [default-area-code=""]>
+```
+
+###Arguments###
+Param                      | Type      | Details
+---------------------------|-----------|----------------------
+ngModel                    | string    | Assignable angular expression to data-bind to.
+international (optional)   | string    | Wether number should be formatted as 'e164' or 'national' format. 'true' or 'false'. Default 'true'. 
+defaultAreaCode (optional) | string    | If specified phonenumbers from this area will be formatted even without an areacode.
+
+
+#Install#
+
+You can install tel.js via bower like this:
+```
+bower install teljs --save
+```
+
+Alternatively you can download the full source as a ZIP file from [Github](https://github.com/michaelkrog/tel.js/archive/master.zip).
+
+
+#FILE FORMAT#
+The metadatalite.js file is taken directly from the libphonenumber repository. The format is defined by Google protobuf definitions and is therefore not very human readable. The following is a partial definition of the format - enough to build tel.js around the file.
+
+__It is two Objects__
 
 The whole file consists of 2 objects in the variables `i18n.phonenumbers.metadata.countryCodeToRegionCodeMap` and `i18n.phonenumbers.metadata.countryToMetadata`.
 
