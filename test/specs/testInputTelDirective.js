@@ -18,6 +18,13 @@ describe('Unit testing teljs directive', function() {
 
         expect(element.val()).toContain('22 33 44 55');
         expect($rootScope.myform.number.$valid).toEqual(true);
+        
+        element.val('22334455');
+        element.triggerHandler('change')
+        $rootScope.$digest();
+        
+        expect($rootScope.myform.number.$valid).toEqual(true);
+        expect($rootScope.number).toEqual('+4522334455');
 
     });
 
@@ -26,7 +33,9 @@ describe('Unit testing teljs directive', function() {
         var element = $compile('<form name="myform"><input name="number" type="tel" international="false" default-area-code="45" ng-model="number"></form>')($rootScope);
         $rootScope.$digest();
         expect($rootScope.myform.number.$valid).toEqual(false);
-
+        
+        
+        expect($rootScope.number).toEqual('12341234');
     });
 
         it('Formats a danish international number as national correctly', function() {
@@ -35,6 +44,7 @@ describe('Unit testing teljs directive', function() {
         $rootScope.$digest();
 
         expect(element.val()).toContain('22 33 44 55');
+        expect($rootScope.number).toEqual('+4522334455');
     });
 
     it('Formats a danish national number correctly to international format using default-area-code', function() {
@@ -43,14 +53,27 @@ describe('Unit testing teljs directive', function() {
         $rootScope.$digest();
 
         expect(element.val()).toContain('+45 22 33 44 55');
+
+        element.val('22334455');
+        element.triggerHandler('change')
+        $rootScope.$digest();
+        
+        
+        expect($rootScope.number).toEqual('+4522334455');
     });
 
     it('Formats a danish number correctly', function() {
         $rootScope.number = '4522334455';
         var element = $compile('<input type="tel" international="true" ng-model="number">')($rootScope);
         $rootScope.$digest();
-
+        
         expect(element.val()).toContain('+45 22 33 44 55');
+        
+        element.val('4522334455');
+        element.triggerHandler('change')
+        $rootScope.$digest();
+
+        expect($rootScope.number).toEqual('+4522334455');
     });
 
     it('Formats a swedish number correctly', function() {
@@ -59,6 +82,7 @@ describe('Unit testing teljs directive', function() {
         $rootScope.$digest();
 
         expect(element.val()).toContain('+46 11 495 52 00');
+        expect($rootScope.number).toEqual('46114955200');
     });
 
     it('Formats a swedish number correctly when default areacode is danish', function() {
@@ -67,6 +91,7 @@ describe('Unit testing teljs directive', function() {
         $rootScope.$digest();
 
         expect(element.val()).toContain('+46 11 495 52 00');
+        expect($rootScope.number).toEqual('46114955200');
     });
 
     it('Formats a swedish number with needless areacode correctly', function() {
@@ -75,6 +100,7 @@ describe('Unit testing teljs directive', function() {
         $rootScope.$digest();
 
         expect(element.val()).toContain('+46 11 495 52 00');
+        expect($rootScope.number).toEqual('460114955200');
     });
 
     it('Formats a swedish national number correctly', function() {
@@ -83,6 +109,12 @@ describe('Unit testing teljs directive', function() {
         $rootScope.$digest();
 
         expect(element.val()).toContain('011-495 52 00');
+        
+        element.val('0114955200');
+        element.triggerHandler('change')
+        $rootScope.$digest();
+
+        expect($rootScope.number).toEqual('+46114955200');
     });
 
     it('Formats a faroese number correctly', function() {
@@ -91,6 +123,12 @@ describe('Unit testing teljs directive', function() {
         $rootScope.$digest();
 
         expect(element.val()).toContain('+298 208080');
+        
+        element.val('298208080');
+        element.triggerHandler('change')
+        $rootScope.$digest();
+
+        expect($rootScope.number).toEqual('+298208080');
     });
 
     it('handles unset value correctly', function() {
@@ -102,6 +140,12 @@ describe('Unit testing teljs directive', function() {
         $rootScope.$digest();
 
         expect(element.val()).toContain('+298 208080');
+        
+        element.val('298208080');
+        element.triggerHandler('change')
+        $rootScope.$digest();
+
+        expect($rootScope.number).toEqual('+298208080');
     });
 
     it('should initialize to a valid model and set valid', function() {
@@ -112,7 +156,12 @@ describe('Unit testing teljs directive', function() {
         $rootScope.$digest();
         expect(element.val()).toEqual('+298 208080');
         expect($rootScope.myform.number.$valid).toEqual(true);
+        
+        element.val('298208080');
+        element.triggerHandler('change')
+        $rootScope.$digest();
 
+        expect($rootScope.number).toEqual('+298208080');
     });
 
     it('should initialize to an invalid model and set invalid', function() {
@@ -123,7 +172,8 @@ describe('Unit testing teljs directive', function() {
         $rootScope.$digest();
         expect(element.val()).toEqual('1234');
         expect($rootScope.myform.number.$valid).toEqual(false);
-
+        
+        expect($rootScope.number).toEqual('1234');
     });
 
     it('should not set invalid on an empty value', function() {
@@ -131,7 +181,7 @@ describe('Unit testing teljs directive', function() {
         var form = $compile('<form name="myform"><input type="tel" name="number" international="true" ng-model="number"></form>')($rootScope);
         $rootScope.$digest();
         expect($rootScope.myform.number.$valid).toEqual(true);
-
+        expect($rootScope.number).toEqual(undefined);
     });
 
     it('should not set invalid on an empty scope value', function() {
@@ -140,7 +190,7 @@ describe('Unit testing teljs directive', function() {
         var form = $compile('<form name="myform"><input type="tel" name="number" international="true" ng-model="number"></form>')($rootScope);
         $rootScope.$digest();
         expect($rootScope.myform.number.$valid).toEqual(true);
-
+        expect($rootScope.number).toEqual('');
     });
 
     it('should not set invalid when view changes back to an empty value', function() {
@@ -152,7 +202,7 @@ describe('Unit testing teljs directive', function() {
         expect($rootScope.myform.number.$valid).toEqual(false);
         $rootScope.myform.number.$setViewValue('');
         expect($rootScope.myform.number.$valid).toEqual(true);
-
+        expect($rootScope.number).toEqual('');
     });
 
     it('should be required if required is set', function() {
@@ -161,7 +211,7 @@ describe('Unit testing teljs directive', function() {
         $rootScope.$digest();
         expect($rootScope.myform.number.$valid).toEqual(false);
         expect($rootScope.myform.number.$error.required).toEqual(true);
-
+        expect($rootScope.number).toEqual(undefined);
     });
 
 });

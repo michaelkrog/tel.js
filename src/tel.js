@@ -200,16 +200,18 @@ function telephoneDirective($filter) {
                 }
             });
 
-            scope.doFormatNumber = function(number) {
-                return $filter('telephone')(number, scope.mode, scope.defaultAreaCode, true);
+            scope.doFormatNumber = function(number, mode) {
+                return $filter('telephone')(number, mode, scope.defaultAreaCode, true);
             };
 
             scope.formatNumber = function(value) {
+                var result;
+                
                 if(!angular.isDefined(value) || value === '') {
                     return '';
                 }
 
-                var result = scope.doFormatNumber(value);
+                result = scope.doFormatNumber(value, scope.mode);
                 if(!result.valid) {
                     result.number = value;
                     ngModel.$setValidity('phoneNumber', false);
@@ -218,19 +220,17 @@ function telephoneDirective($filter) {
             };
 
             scope.parseNumber = function(value) {
-
                 var formatResult;
                 value = value ? teljs.trimNumber(value) : value;
-                formatResult = scope.doFormatNumber(value);
-
+                formatResult = scope.doFormatNumber(value, 'e164');
+                
                 if (!formatResult.valid && (value === '' || value === undefined)) {
                     formatResult.valid = true;
                     formatResult.number = '';
                 }
 
                 ngModel.$setValidity('phoneNumber', formatResult.valid);
-
-                return (scope.mode === 'e164' && formatResult.number !== '') ? '+' + formatResult.number : formatResult.number;
+                return formatResult.number !== '' ? '+' + teljs.trimNumber(formatResult.number) : '';
             };
 
             ngModel.$formatters.push(scope.formatNumber);
