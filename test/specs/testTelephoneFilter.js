@@ -54,5 +54,14 @@ describe('Unit testing teljs filter', function() {
         expect(number).toContain('+298 218080');
     });
     
+    it('Formats a Canadian Montreal number correctly', function() {
+       var number =  $filter('telephone')('15148720311');
+       expect(number).toContain('+1 514-872-0311')
+    });
+    
+    it('Formats a US number correctly', function() {
+       var number =  $filter('telephone')('17189666155');
+       expect(number).toContain('+1 718-966-6155')
+    });
     
 });

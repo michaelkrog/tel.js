@@ -15,7 +15,7 @@ if (window.goog === undefined) {
 }
 /* Fallback if google protocols is not defined - END*/
 
-function telephoneFilter() {
+function telephoneFilter($log) {
 
     var countryCodes = i18n.phonenumbers.metadata.countryCodeToRegionCodeMap;
     var countryMetaData = i18n.phonenumbers.metadata.countryToMetadata;
@@ -51,12 +51,13 @@ function telephoneFilter() {
         return regions;
     };
 
-    var formatNumberForRegion = function(region, nationalNumber, mode) {
+    var formatNumberForRegion = function(region, nationalNumber, mode, mainRegion) {
         var metaData = countryMetaData[region],
+            metaDataMain = countryMetaData[mainRegion],
             countryCode = metaData[10],
             nationalPrefix = metaData[12],
-            nationalFormats = metaData[19],
-            internationalFormats = metaData[20],
+            nationalFormats = metaDataMain[19],
+            internationalFormats = metaDataMain[20],
             number, international = (mode === 'e164'),
             numberFormats = international && internationalFormats ? internationalFormats : nationalFormats,
             entry, i, matchNumber, matchLeadingDigits, validRange = false, range;
@@ -116,9 +117,13 @@ function telephoneFilter() {
     };
 
     var formatNumber = function(number, mode) {
-        var regions = regionsFromNumber(number), region, i, countryCode, nationalPrefix, nationalNumber, result;
-
-        if(regions) {
+        var regions = regionsFromNumber(number), region, i, countryCode, nationalPrefix, nationalNumber, result, mainRegion;
+        
+            
+        if(regions && regions.length > 0) {
+            $log.debug(regions.length + "  regions found for number: " + number);
+            mainRegion = regions[0];
+            
             for(i=0;i<regions.length;i++) {
                 region = regions[i];
                 countryCode = countryMetaData[region][10];
@@ -127,7 +132,7 @@ function telephoneFilter() {
                 if(nationalPrefix && nationalNumber.substr(0, nationalPrefix.length) !== nationalPrefix) {
                     nationalNumber = nationalPrefix + '' + nationalNumber;
                 }
-                result = formatNumberForRegion(region, nationalNumber, mode);
+                result = formatNumberForRegion(region, nationalNumber, mode, mainRegion);
                 if(result) break;
             }
         }
