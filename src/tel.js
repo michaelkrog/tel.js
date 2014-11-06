@@ -15,22 +15,31 @@ if (window.goog === undefined) {
 }
 /* Fallback if google protocols is not defined - END*/
 
-function telephoneFilter($log) {
+var teljs = angular.module('teljs',[]);
+teljs.trimNumber = function(value) {
+    if (value) {
+        return value.replace(/[\+\s\-\(\)]/g, '');
+    } else {
+        return value;
+    }
+};
+
+teljs.filter('telephone', [function() {
 
     var countryCodes = i18n.phonenumbers.metadata.countryCodeToRegionCodeMap;
     var countryMetaData = i18n.phonenumbers.metadata.countryToMetadata;
     var validRangeMap = {
-        2: "fixedLine",
-        3: "mobile",
-        4: "tollFree",
-        5: "premiumRate",
-        6: "sharedCost",
-        7: "personalNumber",
-        8: "voip",
-        21: "pager",
-        24: "noInternationalDialing",
-        25: "uan",
-        28: "voiceMail"
+        2: 'fixedLine',
+        3: 'mobile',
+        4: 'tollFree',
+        5: 'premiumRate',
+        6: 'sharedCost',
+        7: 'personalNumber',
+        8: 'voip',
+        21: 'pager',
+        24: 'noInternationalDialing',
+        25: 'uan',
+        28: 'voiceMail'
     };
 
     var regionsFromNumber = function(e164) {
@@ -118,12 +127,9 @@ function telephoneFilter($log) {
 
     var formatNumber = function(number, mode) {
         var regions = regionsFromNumber(number), region, i, countryCode, nationalPrefix, nationalNumber, result, mainRegion;
-        
-            
         if(regions && regions.length > 0) {
-            $log.debug(regions.length + "  regions found for number: " + number);
             mainRegion = regions[0];
-            
+
             for(i=0;i<regions.length;i++) {
                 region = regions[i];
                 countryCode = countryMetaData[region][10];
@@ -133,7 +139,9 @@ function telephoneFilter($log) {
                     nationalNumber = nationalPrefix + '' + nationalNumber;
                 }
                 result = formatNumberForRegion(region, nationalNumber, mode, mainRegion);
-                if(result) break;
+                if (result) {
+                  break;
+                }
             }
         }
         return result;
@@ -172,23 +180,24 @@ function telephoneFilter($log) {
         if(defaultAreaCode && defaultAreaCode !== '') {
             defaultGeneratedNumber = defaultAreaCode + '' + trimmedNumber;
             number = formatNumber(defaultGeneratedNumber, mode);
-            if(number) return wrapResult(input, number, returnObject);
+            if (number) {
+                return wrapResult(input, number, returnObject);
+            }
         }
 
         number = formatNumber(trimmedNumber, mode);
         return wrapResult(input, number, returnObject);
-
-
     };
-}
+}]);
 
-function telephoneDirective($filter) {
+teljs.directive('input', ['$filter', function($filter) {
     return {
         restrict: 'E', // only activate on element attribute
         require: '?ngModel', // get a hold of NgModelController
         link: function(scope, element, attrs, ngModel) {
-            if (attrs.type !== 'tel') return;
-
+            if (attrs.type !== 'tel') {
+                return;
+            }
             scope.international = attrs.international;
             scope.defaultAreaCode = attrs.defaultAreaCode;
 
@@ -211,7 +220,7 @@ function telephoneDirective($filter) {
 
             scope.formatNumber = function(value) {
                 var result;
-                
+
                 if(!angular.isDefined(value) || value === '') {
                     return '';
                 }
@@ -228,7 +237,7 @@ function telephoneDirective($filter) {
                 var formatResult;
                 value = value ? teljs.trimNumber(value) : value;
                 formatResult = scope.doFormatNumber(value, 'e164');
-                
+
                 if (!formatResult.valid && (value === '' || value === undefined)) {
                     formatResult.valid = true;
                     formatResult.number = '';
@@ -243,19 +252,4 @@ function telephoneDirective($filter) {
 
         }
     };
-}
-telephoneDirective.$inject = ['$filter'];
-
-
-/********** BOOTSTRAP ************/
-var teljs = angular.module('teljs',[]);
-teljs.trimNumber = function(value) {
-    if(value) {
-        return value.replace(/[\+\s\-\(\)]/g, '');
-    } else {
-        return value;
-    }
-};
-
-teljs.filter('telephone', telephoneFilter);
-teljs.directive('input', telephoneDirective);
+}]);
