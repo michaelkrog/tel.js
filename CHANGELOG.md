@@ -1,3 +1,11 @@
+## 1.1.1
+
+* Added ignores to bower.json
+
+## 1.1.0
+
+* Improved build process
+
 ## 1.0.11
 
 * Ensured directive and filter are minsafe. 

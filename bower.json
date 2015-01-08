@@ -13,7 +13,11 @@
     "init_repo.sh",
     "karma.conf.js",
     "test/**",
-    "Gruntfile.js"
+    "Gruntfile.js",
+    "nbproject/**",
+    "src/**",
+    "init_repo.sh",
+    "package.json"
   ],
   "main": [
     "dist/tel.js",
