@@ -1,5 +1,6 @@
 {
     "name": "teljs",
+    "version": "1.0.11",
     "devDependencies": {
         "angular": "1.2.16",
         "angular-mocks": "1.2.16"
@@ -11,8 +12,9 @@
         "bower_components/**",
         "init_repo.sh",
         "karma.conf.js",
-        "test/**"
+        "test/**",
+        "Gruntfile.js"
     ],
-    "main": "src/tel.js"
+    "main": ["dist/tel.js", "dist/metadatalite.js"]
 
 }

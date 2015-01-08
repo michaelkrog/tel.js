@@ -2,7 +2,7 @@ module.exports = function(config) {
   config.set({
 
     // base path, that will be used to resolve files and exclude
-    basePath: '',
+    basePath: '../',
 
 
     // frameworks to use
@@ -13,8 +13,10 @@ module.exports = function(config) {
     files: [
       'bower_components/angular/angular.js',
       'bower_components/angular-mocks/angular-mocks.js',
-      'src/tel.js',
-      'src/metadatalite.js',
+      'src/scripts/tel.js',
+      'src/scripts/filters/*.js',
+      'src/scripts/directives/*.js',
+      'src/scripts/metadatalite.js',
       'test/specs/*.js'
     ],
 
@@ -57,7 +59,7 @@ module.exports = function(config) {
     // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
     // - PhantomJS
     // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-    browsers: ['Chrome'],
+    browsers: ['PhantomJS'],
 
 
     // If browser does not capture in given timeout [ms], kill it
