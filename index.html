@@ -5,6 +5,7 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="Tel.js is an AngularJS directive and filter for validating and formatting international phone numbers.">
     <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
@@ -41,7 +42,7 @@
                     The following input field is of type 'tel' and is formatted as a phone number. You can type in any valid phone number with countrycode(fx. +45 for Denmark, +46 for Sweden etc.) and it will automatically format it according to the country's formatting tradition.
                     </p>
                     <p>
-                        The phone number will also be validated so you can take advantage of the in Angulars forms. The validation even takes valid number ranges for the specific country into consideration.
+                        The input  will also be validated so you can take advantage of the in Angular's forms. The validation even takes valid number ranges for the specific country into consideration.
                     </p>
                     <p ng-init="number='+4522334455'">
                         <form name="telform">
@@ -54,13 +55,13 @@
 
                     <h4>Try this!</h4>
                     <p>
-                        If you don't know any phone numbers that can test the number ranges for validation and formatting you can try these.
+                        If you lack input to test the number ranges for validation and formatting you can try these.
                         </p>
                         <p>
-                        '+45 22 33 44 55' is a valid Danish phone number but '+45 11 22 33 44' is not, because Denmark has no number ranges starting with '1'. 
+                        '+45 22 33 44 55' is a valid in Denmark but '+45 11 22 33 44' is not, because Denmark has no ranges starting with '1'. 
                     </p>
                     <p>
-                    You should also try out swedish numbers which has a very diverse way of formatting numbers. Fx. '+46 120 123 45' and '+46 11 01 23 45' are both valid formats depending of the number range.
+                    You should also try out swedish numbers which have a very diverse way of formatting numbers. Fx. '+46 120 123 45' and '+46 11 01 23 45' are both valid formats depending of the number range.
                    </p>
 
             </section>
