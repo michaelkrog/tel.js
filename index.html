@@ -48,7 +48,7 @@
                     This is a simple demo of tel.js.
                 </p>
                 <p>
-                    The following input field is of type 'tel' and is formatted as a phone number. You can type in any valid phone number with countrycode(fx. +45 for Denmark, +46 for Sweden etc.) and it will automatically format it according to the country's formatting tradition.
+                    The following input field is of type 'tel' and is validated and formatted as a phone number. You can type in any valid phone number with countrycode(fx. +45, +46 etc.) and it will automatically format it according to the country's formatting tradition.
                     </p>
                     <p>
                         The input  will also be validated so you can take advantage of the in Angular's forms. The validation even takes valid number ranges for the specific country into consideration.
@@ -64,13 +64,13 @@
 
                     <h4>Try this!</h4>
                     <p>
-                        If you lack data to test the number ranges for validation and formatting you can try these.
+                        If you lack data to test the validation and formatting you can try these.
                         </p>
                         <p>
-                        '+45 22 33 44 55' is a valid in Denmark but '+45 11 22 33 44' is not, because Denmark has no ranges starting with '1'. 
+                        '+45 22 33 44 55' is a valid in Denmark but '+45 11 22 33 44' is not, because there is no ranges there starting with '1'. 
                     </p>
                     <p>
-                    You should also try out swedish numbers which have a very diverse way of formatting. Fx. '+46 120 123 45' and '+46 11 01 23 45' are both validated and formatted correctly according to the number range.
+                    You should also try out swedish numbers which have a very diverse way of formatting. Fx. '+46 120 123 45' and '+46 11 01 23 45' are both validated and formatted correctly according to the range.
                    </p>
 
             </section>
