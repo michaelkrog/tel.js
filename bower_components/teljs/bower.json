@@ -1,18 +1,26 @@
 {
-    "name": "teljs",
-    "devDependencies": {
-        "angular": "1.2.16",
-        "angular-mocks": "1.2.16"
-    },
-    "ignore": [
-        ".bowerrc",
-        ".gitignore",
-        ".travis.yml",
-        "bower_components/**",
-        "init_repo.sh",
-        "karma.conf.js",
-        "test/**"
-    ],
-    "main": "src/tel.js"
-
+  "name": "teljs",
+  "version": "1.1.1",
+  "devDependencies": {
+    "angular": "1.2.16",
+    "angular-mocks": "1.2.16"
+  },
+  "ignore": [
+    ".bowerrc",
+    ".gitignore",
+    ".travis.yml",
+    "bower_components/**",
+    "init_repo.sh",
+    "karma.conf.js",
+    "test/**",
+    "Gruntfile.js",
+    "nbproject/**",
+    "src/**",
+    "init_repo.sh",
+    "package.json"
+  ],
+  "main": [
+    "dist/tel.js",
+    "dist/metadatalite.js"
+  ]
 }
