@@ -63,6 +63,9 @@ angular.module('teljs')
                         ngModel.$setValidity('phoneNumber', formatResult.valid);
                         return formatResult.number !== '' ? '+' + teljs.trimNumber(formatResult.number) : '';
                     };
+                    
+                    ngModel.$formatters = [];
+                    ngModel.$parsers = [];
 
                     ngModel.$formatters.push(scope.formatNumber);
                     ngModel.$parsers.push(scope.parseNumber);
