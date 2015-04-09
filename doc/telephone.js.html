@@ -1,134 +1,31 @@
-/*global angular */
-/*jslint browser: true */
-/* Fallback if google protocols is not defined - START*/
-/* jshint ignore:start */
-if (window.goog === undefined) {
-    goog = {
-        provide: angular.noop
-    };
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: filters/telephone.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
 
-    i18n = {
-        phonenumbers: {
-            metadata: {
-            }
-        }
-    };
-}
-/* jshint ignore:end */
-/* Fallback if google protocols is not defined - END*/
+<body>
 
-var teljs = angular.module('teljs',[]);
-teljs.trimNumber = function(value) {
-    'use strict';
-    if (value) {
-        return value.replace(/[\+\s\-\(\)]/g, '');
-    } else {
-        return value;
-    }
-};
+<div id="main">
+    
+    <h1 class="page-title">Source: filters/telephone.js</h1>
+    
+    
 
 
-'use strict';
-
-/**
- * @ngdoc directive
- * @name blacktiger-app.directive:roomInfo
- * @description
- * # roomInfo
- */
-angular.module('teljs')
-        .directive('input', ["$filter", function ($filter) {
-            return {
-                restrict: 'E', // only activate on element attribute
-                require: '?ngModel', // get a hold of NgModelController
-                link: function (scope, element, attrs, ngModel) {
-                    if (attrs.type !== 'tel') {
-                        return;
-                    }
-                    
-                    scope.initializeProperties = function() {
-                        scope.international = attrs.international;
-                        scope.defaultAreaCode = attrs.defaultAreaCode;
-
-                        if (scope.international !== 'false') {
-                            scope.mode = 'e164';
-                        } else {
-                            scope.mode = 'national';
-                        }
-                    };
-
-                    element.on('focus', scope.initializeProperties);
-                    element.on('blur', function () {
-                        alert("blur");
-                        if (ngModel.$valid) {
-                            ngModel.$setViewValue(scope.formatNumber(ngModel.$modelValue));
-                            ngModel.$render();
-                        }
-                    });
-
-                    scope.doFormatNumber = function (number, mode) {
-                        return $filter('telephone')(number, mode, scope.defaultAreaCode, true);
-                    };
-
-                    scope.formatNumber = function (value) {
-                        var result;
-                        alert("format: " + value);
-                        if (!angular.isDefined(value) || value === '') {
-                            return '';
-                        }
-
-                        result = scope.doFormatNumber(value, scope.mode);
-                        alert("format: result: " + result.number);
-                        if (!result.valid) {
-                            result.number = value;
-                            ngModel.$setValidity('phoneNumber', false);
-                        } else {
-                            var trimmedResult = '+' + teljs.trimNumber(scope.doFormatNumber(value, 'e164').number);
-                            alert("format: compare: " + value + "/" + trimmedResult + "/" + ngModel.$$rawModelValue);
-                            if(trimmedResult !== value) {
-                                ngModel.$$rawModelValue = trimmedResult;
-                                scope.$evalAsync(function() {
-                                    alert("Validate start");
-                                    ngModel.$$parseAndValidate();
-                                
-                                });
-                            }
-                        }
-                        
-                        
-                        return result.number;
-                    };
-
-                    scope.parseNumber = function (value) {
-                        var formatResult, returnVal;
-                        alert("parse: " + value);
-                        value = value ? teljs.trimNumber(value) : value;
-                        formatResult = scope.doFormatNumber(value, 'e164');
-
-                        if (!formatResult.valid && (value === '' || value === undefined)) {
-                            formatResult.valid = true;
-                            formatResult.number = '';
-                        }
-
-                        ngModel.$setValidity('phoneNumber', formatResult.valid);
-                        returnVal = formatResult.number !== '' ? '+' + teljs.trimNumber(formatResult.number) : '';
-                        alert("parse: return: " + returnVal);
-                        return returnVal;
-                    };
-
-                    ngModel.$formatters = [];
-                    ngModel.$parsers = [];
-
-                    ngModel.$formatters.push(scope.formatNumber);
-                    ngModel.$parsers.push(scope.parseNumber);
-                    
-                    scope.initializeProperties();
-
-                }
-            };
-        }]);
-
-'use strict';
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>'use strict';
 
 /**
  * @ngdoc filter
@@ -202,7 +99,7 @@ angular.module('teljs')
                     }
 
                     if (validRange) {
-                        for (i = 0; i < numberFormats.length; i++) {
+                        for (i = 0; i &lt; numberFormats.length; i++) {
                             entry = numberFormats[i];
                             matchNumber = new RegExp('^(' + entry[1] + ')$').exec(nationalNumber);
 
@@ -245,7 +142,7 @@ angular.module('teljs')
                 if (regions && regions.length > 0) {
                     mainRegion = regions[0];
 
-                    for (i = 0; i < regions.length; i++) {
+                    for (i = 0; i &lt; regions.length; i++) {
                         region = regions[i];
                         countryCode = countryMetaData[region][10];
                         nationalPrefix = countryMetaData[region][12];
@@ -304,3 +201,26 @@ angular.module('teljs')
                 return wrapResult(input, number, returnObject);
             };
         });
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Thu Apr 09 2015 10:52:13 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
