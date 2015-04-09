@@ -38,7 +38,7 @@ describe('Unit testing teljs directive', function() {
         expect($rootScope.number).toEqual('12341234');
     });
 
-        it('Formats a danish international number as national correctly', function() {
+    it('Formats a danish international number as national correctly', function() {
         $rootScope.number = '+4522334455';
         var element = $compile('<input type="tel" international="false" default-area-code="45" ng-model="number">')($rootScope);
         $rootScope.$digest();
@@ -68,6 +68,7 @@ describe('Unit testing teljs directive', function() {
         $rootScope.$digest();
         
         expect(element.val()).toContain('+45 22 33 44 55');
+        expect($rootScope.number).toEqual('+4522334455');
         
         element.val('4522334455');
         element.triggerHandler('change')
@@ -80,9 +81,10 @@ describe('Unit testing teljs directive', function() {
         $rootScope.number = '46114955200';
         var element = $compile('<input type="tel" international="true" ng-model="number">')($rootScope);
         $rootScope.$digest();
+        $rootScope.$apply();
 
         expect(element.val()).toContain('+46 11 495 52 00');
-        expect($rootScope.number).toEqual('46114955200');
+        expect($rootScope.number).toEqual('+46114955200');
     });
 
     it('Formats a swedish number correctly when default areacode is danish', function() {
@@ -91,7 +93,7 @@ describe('Unit testing teljs directive', function() {
         $rootScope.$digest();
 
         expect(element.val()).toContain('+46 11 495 52 00');
-        expect($rootScope.number).toEqual('46114955200');
+        expect($rootScope.number).toEqual('+46114955200');
     });
 
     it('Formats a swedish number with needless areacode correctly', function() {
@@ -100,7 +102,7 @@ describe('Unit testing teljs directive', function() {
         $rootScope.$digest();
 
         expect(element.val()).toContain('+46 11 495 52 00');
-        expect($rootScope.number).toEqual('460114955200');
+        expect($rootScope.number).toEqual('+46114955200');
     });
 
     it('Formats a swedish national number correctly', function() {

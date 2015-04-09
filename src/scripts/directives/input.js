@@ -15,16 +15,8 @@ angular.module('teljs')
                     if (attrs.type !== 'tel') {
                         return;
                     }
-                    scope.international = attrs.international;
-                    scope.defaultAreaCode = attrs.defaultAreaCode;
-
-                    if (scope.international !== 'false') {
-                        scope.mode = 'e164';
-                    } else {
-                        scope.mode = 'national';
-                    }
-
-                    element.on('blur', function () {
+                    
+                    scope.initializeProperties = function() {
                         scope.international = attrs.international;
                         scope.defaultAreaCode = attrs.defaultAreaCode;
 
@@ -33,8 +25,12 @@ angular.module('teljs')
                         } else {
                             scope.mode = 'national';
                         }
+                    };
 
-                        if (ngModel.$valid || true) {
+                    element.on('focus', scope.initializeProperties);
+                    element.on('blur', function () {
+                        alert("blur");
+                        if (ngModel.$valid) {
                             ngModel.$setViewValue(scope.formatNumber(ngModel.$modelValue));
                             ngModel.$render();
                         }
@@ -46,21 +42,36 @@ angular.module('teljs')
 
                     scope.formatNumber = function (value) {
                         var result;
-
+                        alert("format: " + value);
                         if (!angular.isDefined(value) || value === '') {
                             return '';
                         }
 
                         result = scope.doFormatNumber(value, scope.mode);
+                        alert("format: result: " + result.number);
                         if (!result.valid) {
                             result.number = value;
                             ngModel.$setValidity('phoneNumber', false);
+                        } else {
+                            var trimmedResult = '+' + teljs.trimNumber(scope.doFormatNumber(value, 'e164').number);
+                            alert("format: compare: " + value + "/" + trimmedResult + "/" + ngModel.$$rawModelValue);
+                            if(trimmedResult !== value) {
+                                ngModel.$$rawModelValue = trimmedResult;
+                                scope.$evalAsync(function() {
+                                    alert("Validate start");
+                                    ngModel.$$parseAndValidate();
+                                
+                                });
+                            }
                         }
+                        
+                        
                         return result.number;
                     };
 
                     scope.parseNumber = function (value) {
-                        var formatResult;
+                        var formatResult, returnVal;
+                        alert("parse: " + value);
                         value = value ? teljs.trimNumber(value) : value;
                         formatResult = scope.doFormatNumber(value, 'e164');
 
@@ -70,7 +81,9 @@ angular.module('teljs')
                         }
 
                         ngModel.$setValidity('phoneNumber', formatResult.valid);
-                        return formatResult.number !== '' ? '+' + teljs.trimNumber(formatResult.number) : '';
+                        returnVal = formatResult.number !== '' ? '+' + teljs.trimNumber(formatResult.number) : '';
+                        alert("parse: return: " + returnVal);
+                        return returnVal;
                     };
 
                     ngModel.$formatters = [];
@@ -78,6 +91,8 @@ angular.module('teljs')
 
                     ngModel.$formatters.push(scope.formatNumber);
                     ngModel.$parsers.push(scope.parseNumber);
+                    
+                    scope.initializeProperties();
 
                 }
             };
