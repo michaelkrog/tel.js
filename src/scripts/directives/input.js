@@ -54,9 +54,7 @@ angular.module('teljs')
                             if(trimmedResult !== value) {
                                 ngModel.$$rawModelValue = trimmedResult;
                                 scope.$evalAsync(function() {
-                                    alert("Validate start");
                                     ngModel.$$parseAndValidate();
-                                
                                 });
                             }
                         }
@@ -67,7 +65,6 @@ angular.module('teljs')
 
                     scope.parseNumber = function (value) {
                         var formatResult, returnVal;
-                        alert("parse: " + value);
                         value = value ? teljs.trimNumber(value) : value;
                         formatResult = scope.doFormatNumber(value, 'e164');
 
@@ -78,7 +75,6 @@ angular.module('teljs')
 
                         ngModel.$setValidity('phoneNumber', formatResult.valid);
                         returnVal = formatResult.number !== '' ? '+' + teljs.trimNumber(formatResult.number) : '';
-                        alert("parse: return: " + returnVal);
                         return returnVal;
                     };
 
