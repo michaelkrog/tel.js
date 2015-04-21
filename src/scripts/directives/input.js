@@ -29,7 +29,6 @@ angular.module('teljs')
 
                     element.on('focus', scope.initializeProperties);
                     element.on('blur', function () {
-                        alert("blur");
                         if (ngModel.$valid) {
                             ngModel.$setViewValue(scope.formatNumber(ngModel.$modelValue));
                             ngModel.$render();
@@ -42,19 +41,16 @@ angular.module('teljs')
 
                     scope.formatNumber = function (value) {
                         var result;
-                        alert("format: " + value);
                         if (!angular.isDefined(value) || value === '') {
                             return '';
                         }
 
                         result = scope.doFormatNumber(value, scope.mode);
-                        alert("format: result: " + result.number);
                         if (!result.valid) {
                             result.number = value;
                             ngModel.$setValidity('phoneNumber', false);
                         } else {
                             var trimmedResult = '+' + teljs.trimNumber(scope.doFormatNumber(value, 'e164').number);
-                            alert("format: compare: " + value + "/" + trimmedResult + "/" + ngModel.$$rawModelValue);
                             if(trimmedResult !== value) {
                                 ngModel.$$rawModelValue = trimmedResult;
                                 scope.$evalAsync(function() {
