@@ -32,9 +32,15 @@ returnObject (optional)    | boolean   | If true the result will be an object of
 #DIRECTIVE#
 
 ###Usage###
+Load the tel.js module:
 ```html
-<input type="tel" 
-    ng-model="" 
+angular.module('<your module>', ['teljs']);
+```
+
+Use the directive as follows:
+```html
+<input type="tel"
+    ng-model=""
     [international=""]
     [default-area-code=""]>
 ```
