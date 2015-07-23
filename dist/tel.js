@@ -71,7 +71,7 @@ angular.module('teljs')
 
                     scope.formatNumber = function (value) {
                         var result;
-                        if (!angular.isDefined(value) || value === '') {
+                        if (!angular.isDefined(value) || value === null || value === '') {
                             return '';
                         }
 
