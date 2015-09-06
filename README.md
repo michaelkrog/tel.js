@@ -5,6 +5,10 @@ A filter and a directive for input type 'tel' that formats and parses internatio
 Based on metadata from libphonenumber.
 
 Demo: http://michaelkrog.github.io/tel.js/
+ 
+###Used by###
+[Skveege](http://skveege.com)
+...and others. 
 
 #FILTER#
 
