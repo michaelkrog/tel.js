@@ -239,15 +239,17 @@ angular.module('teljs')
 
                     for (i = 0; i < regions.length; i++) {
                         region = regions[i];
-                        countryCode = countryMetaData[region][10];
-                        nationalPrefix = countryMetaData[region][12];
-                        nationalNumber = number.substr(countryCode.toString().length);
-                        if (nationalPrefix && nationalNumber.substr(0, nationalPrefix.length) !== nationalPrefix) {
-                            nationalNumber = nationalPrefix + '' + nationalNumber;
-                        }
-                        result = formatNumberForRegion(region, nationalNumber, mode, mainRegion);
-                        if (result) {
-                            break;
+                        if (countryMetaData[region]) {
+                            countryCode = countryMetaData[region][10];
+                            nationalPrefix = countryMetaData[region][12];
+                            nationalNumber = number.substr(countryCode.toString().length);
+                            if (nationalPrefix && nationalNumber.substr(0, nationalPrefix.length) !== nationalPrefix) {
+                                nationalNumber = nationalPrefix + '' + nationalNumber;
+                            }
+                            result = formatNumberForRegion(region, nationalNumber, mode, mainRegion);
+                            if (result) {
+                                break;
+                            }
                         }
                     }
                 }
