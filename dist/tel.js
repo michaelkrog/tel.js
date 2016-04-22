@@ -20,7 +20,7 @@ if (window.goog === undefined) {
 var teljs = angular.module('teljs',[]);
 teljs.trimNumber = function(value) {
     'use strict';
-    if (value) {
+    if (angular.isString(value)) {
         return value.replace(/[\+\s\-\(\)]/g, '');
     } else {
         return value;
@@ -234,6 +234,11 @@ angular.module('teljs')
 
             var formatNumber = function (number, mode) {
                 var regions = regionsFromNumber(number), region, i, countryCode, nationalPrefix, nationalNumber, result, mainRegion;
+
+                if (angular.isNumber(number)) {
+                  number = number.toString();
+                }
+
                 if (regions && regions.length > 0) {
                     mainRegion = regions[0];
 
