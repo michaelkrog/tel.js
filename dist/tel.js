@@ -20,7 +20,7 @@ if (window.goog === undefined) {
 var teljs = angular.module('teljs',[]);
 teljs.trimNumber = function(value) {
     'use strict';
-    if (value) {
+    if (angular.isString(value)) {
         return value.replace(/[\+\s\-\(\)]/g, '');
     } else {
         return value;
