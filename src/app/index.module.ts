@@ -2,7 +2,6 @@
 
 import { config } from './index.config';
 import { runBlock } from './index.run';
-import { MainController } from './main/main.controller';
 import { telephoneDirective } from './components/directive/telephone.directive';
 import { telephoneFilter } from './components/filter/telephone.filter';
 
@@ -25,7 +24,6 @@ module teljs {
   angular.module('teljs', [])
     .config(config)
     .run(runBlock)
-    .controller('MainController', MainController)
     .directive('input', telephoneDirective)
     .filter('telephone', telephoneFilter);
 }
