@@ -2,7 +2,7 @@
 <html ng-app="teljs" ng-strict-di>
   <head>
     <meta charset="utf-8">
-    <title>teljsNew</title>
+    <title>teljs</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -26,19 +26,6 @@
 
     <div class="container" ng-controller="MainController as main">
     
-      <div class="jumbotron">
-        <h1>'Allo, 'Allo!</h1>
-        <p class="lead">
-          <img src="assets/images/yeoman.png" alt="I'm Yeoman"><br>
-          Always a pleasure scaffolding your apps.
-        </p>
-        <p class="animated infinite" ng-class="main.classAnimation">
-          <a class="btn btn-lg btn-success" ng-click="main.showToastr()">Splendid Toastr</a>
-        </p>
-        <p>
-          With ♥ thanks to the contributions of<acme-malarkey extra-values="['Yeoman', 'Gulp', 'Angular']"></acme-malarkey>
-        </p>
-      </div>
       <form name="telform">
           <input name="number" international="true" type="tel" ng-model="main.telephone">
           <span ng-if="!telform.number.$valid">not valid</span>
