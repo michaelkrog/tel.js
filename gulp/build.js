@@ -3,6 +3,9 @@
 var path = require('path');
 var gulp = require('gulp');
 var conf = require('./conf');
+var debug = require('gulp-debug');
+var gulpIgnore = require('gulp-ignore');
+
 
 var $ = require('gulp-load-plugins')({
   pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del']
@@ -35,25 +38,28 @@ gulp.task('html', ['inject', 'partials'], function () {
   };
 
   var htmlFilter = $.filter('*.html', { restore: true });
-  var jsFilter = $.filter('**/*.js', { restore: true });
+  var jsFilter = $.filter('**/app.js', { restore: true });
   var cssFilter = $.filter('**/*.css', { restore: true });
 
-  return gulp.src(path.join(conf.paths.tmp, '/serve/*.html'))
+  
+  return gulp.src([path.join(conf.paths.tmp, '/serve/*.html')])
     .pipe($.inject(partialsInjectFile, partialsInjectOptions))
     .pipe($.useref())
+    .pipe(gulpIgnore.exclude('**/vendor.js'))
     .pipe(jsFilter)
-    .pipe($.sourcemaps.init())
-    .pipe($.uglify({ preserveComments: $.uglifySaveLicense })).on('error', conf.errorHandler('Uglify'))
-    .pipe($.rev())
+    .pipe(debug({title: 'unicorn:'}))
+		.pipe($.sourcemaps.init())
+    //.pipe($.uglify({ preserveComments: $.uglifySaveLicense })).on('error', conf.errorHandler('Uglify'))
+    //.pipe($.rev())
     .pipe($.sourcemaps.write('maps'))
     .pipe(jsFilter.restore)
     .pipe(cssFilter)
     // .pipe($.sourcemaps.init())
     .pipe($.cssnano())
-    .pipe($.rev())
+    //.pipe($.rev())
     // .pipe($.sourcemaps.write('maps'))
     .pipe(cssFilter.restore)
-    .pipe($.revReplace())
+    //.pipe($.revReplace())
     .pipe(htmlFilter)
     .pipe($.htmlmin({
       removeEmptyAttributes: true,

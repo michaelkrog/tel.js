@@ -2,7 +2,8 @@
   "compileOnSave": false,
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es5"
+    "target": "es5",
+    "declaration": true
   },
   "exclude": [
     "bower_components",

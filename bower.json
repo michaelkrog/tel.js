@@ -9,5 +9,6 @@
   },
   "resolutions": {
     "angular": "~1.5.3"
-  }
+  },
+  "ignore": ["coverage", "gulp", "e2e", "typings"]
 }

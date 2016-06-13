@@ -1,5 +1,5 @@
 {
-  "name": "teljsNew",
+  "name": "teljs",
   "version": false,
   "ambientDependencies": {
     "jquery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts#bb051830df88f5a55dcf06b7fe85bf6b62cc97f2",
