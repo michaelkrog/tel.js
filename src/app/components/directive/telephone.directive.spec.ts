@@ -124,6 +124,28 @@ describe('Unit testing teljs directive', function () {
     expect($rootScope.number).toEqual('+46114955200');
   });
 
+  it('Formats a german national number correctly', function () {
+    $rootScope.number = '081539308548';
+    var element = $compile('<input type="tel" international="false" default-area-code="49" ng-model="number">')($rootScope);
+    $rootScope.$digest();
+
+    expect(element.val()).toContain('08153 9308548');
+
+    element.val('081539308548');
+    element.triggerHandler('change');
+    $rootScope.$digest();
+
+    expect($rootScope.number).toEqual('+4981539308548');
+  });
+
+  it('Formats a german international number correctly', function () {
+    $rootScope.number = '+4981539308548';
+    var element = $compile('<input type="tel" international="true" default-area-code="49" ng-model="number">')($rootScope);
+    $rootScope.$digest();
+
+    expect(element.val()).toContain('+49 8153 9308548');
+  });
+
   it('Formats a faroese number correctly', function () {
     $rootScope.number = '298208080';
     var element = $compile('<input type="tel" international="true" ng-model="number">')($rootScope);

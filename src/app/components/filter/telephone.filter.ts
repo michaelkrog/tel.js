@@ -28,6 +28,12 @@ export function telephoneFilter() {
         var filter = new TelephoneFilter();
         mode = mode ? mode : 'e164';
         trimmedNumber = Util.trimNumber(input);
+
+        number = filter.formatNumber(trimmedNumber, mode);
+        if (number) {
+            return filter.wrapResult(input, number, returnObject);
+        }
+
         if (defaultAreaCode && defaultAreaCode !== '') {
             defaultGeneratedNumber = defaultAreaCode + '' + trimmedNumber;
             number = filter.formatNumber(defaultGeneratedNumber, mode);
@@ -36,8 +42,8 @@ export function telephoneFilter() {
             }
         }
 
-        number = filter.formatNumber(trimmedNumber, mode);
         return filter.wrapResult(input, number, returnObject);
+        
     };
 
 
@@ -131,10 +137,12 @@ class TelephoneFilter {
                             number = '+' + countryCode + ' ' + number;
                         } else {
                             number = nationalNumber;
+                            number = number.replace(new RegExp(entry[1]), format);
+                            
                             if (nationalPrefix) {
                                 number = nationalPrefix + '' + number;
                             }
-                            number = number.replace(new RegExp(entry[1]), format);
+                            
                         }
                         break;
                     }

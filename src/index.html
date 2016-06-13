@@ -24,16 +24,15 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div class="container" ng-init="telephone = '+4522332233'">
+    <div class="container" ng-init="telephone = '081539308548'">
     
       <form name="telform">
-          <input name="number" international="true" type="tel" ng-model="telephone">
+          <input name="number" international="true" type="tel" ng-model="telephone" default-area-code="1">
           <span ng-if="!telform.number.$valid">not valid</span>
           <span ng-if="telform.number.$valid">valid</span>
 
       </form>
       {{main.telephone}}
-    
     </div>
     
 

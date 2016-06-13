@@ -77,4 +77,14 @@ describe('Unit testing teljs filter', function () {
     var number = $filter('telephone')('17189666155');
     expect(number).toContain('+1 718-966-6155');
   });
+
+  it('Formats a German national number correctly', function() {
+    var number = $filter('telephone')('081539308548', 'e164', '49');
+    expect(number).toContain('+49 8153 9308548');
+  })
+
+  it('Formats a German international number correctly', function() {
+    var number = $filter('telephone')('+4981539308548', 'e164', '49');
+    expect(number).toContain('+49 8153 9308548');
+  })
 });
