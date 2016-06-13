@@ -15,5 +15,8 @@
     "gulp",
     "e2e",
     "typings"
+  ], "main": [
+    "dist/tel.js",
+    "data/metadatalite.js"
   ]
 }
