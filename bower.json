@@ -1,6 +1,6 @@
 {
   "name": "teljs",
-  "version": "1.3.0",
+  "version": "1.3.0-beta",
   "dependencies": {
     "angular": "~1.5.3"
   },
