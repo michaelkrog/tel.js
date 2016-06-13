@@ -1,6 +1,6 @@
 {
   "name": "teljs",
-  "version": "1.3.0-beta",
+  "version": "1.3.0",
   "dependencies": {
     "angular": "~1.5.3"
   },
@@ -10,5 +10,10 @@
   "resolutions": {
     "angular": "~1.5.3"
   },
-  "ignore": ["coverage", "gulp", "e2e", "typings"]
+  "ignore": [
+    "coverage",
+    "gulp",
+    "e2e",
+    "typings"
+  ]
 }
