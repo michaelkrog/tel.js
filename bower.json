@@ -17,7 +17,7 @@
     "typings"
   ],
   "main": [
-    "dist/tel.js",
+    "dist/scripts/tel.js",
     "data/metadatalite.js"
   ]
 }
