@@ -242,4 +242,33 @@ describe('Unit testing teljs directive', function () {
     expect($rootScope.myform.number.$error.required).toEqual(true);
     expect($rootScope.number).toEqual(undefined);
   });
+
+  it('should not pollute the scope', function () {
+    var scope = $rootScope .$new();
+    scope.number = '+298 208080';
+    var form = $compile('<form name="myform"><input type="tel" name="number" international="true" ng-model="number"></form>')(scope);
+    var element = form.find('input');
+    scope.$digest();
+    expect(element.val()).toEqual('+298 208080');
+    expect(scope.myform.number.$valid).toEqual(true);
+
+    expect(scope.mode).toBe(undefined);
+    expect(scope.international).toBe(undefined);
+    expect(scope.defaultAreaCode).toBe(undefined);
+  });
+
+  it('should support 2 numbers in same scope and form', function () {
+    var scope = $rootScope .$new();
+    scope.number1 = '+298208080';
+    scope.number2 = '+298208081';
+    var form = $compile('<form name="myform"><input type="tel" name="number1" international="true" ng-model="number1"><input type="tel" name="number2" international="true" ng-model="number2"></form>')(scope);
+    var elements = form.find('input');
+    scope.$digest();
+    expect(elements[0].value).toEqual('+298 208080');
+    expect(elements[1].value).toEqual('+298 208081');
+    expect(scope.myform.number1.$valid).toEqual(true);
+    expect(scope.myform.number2.$valid).toEqual(true);
+
+
+  });
 });
