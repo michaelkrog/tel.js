@@ -122,7 +122,7 @@
 	        this.filterService = filterService;
 	    }
 	    TelephoneController.prototype.initializeProperties = function () {
-	        this.international = angular.isDefined(this.attrs.international) && this.attrs.international === 'true';
+	        this.international = !angular.isDefined(this.attrs.international) || this.attrs.international === 'true';
 	        this.defaultAreaCode = this.attrs.defaultAreaCode;
 	        if (this.international) {
 	            this.mode = telephone_filter_1.Mode.E164;
