@@ -73,9 +73,14 @@ describe('Unit testing teljs filter', function () {
     expect(number).toContain('+1 514-872-0311');
   });
 
-  it('Formats a US number correctly', function () {
+  it('Formats an internationl US number correctly', function () {
     var number = $filter('telephone')('17189666155');
     expect(number).toContain('+1 718-966-6155');
+  });
+
+  it('Formats a national US number correctly', function () {
+    var number = $filter('telephone')('7189666155', 'national', '1');
+    expect(number).toContain('(718) 966-6155');
   });
 
   it('Formats a German national number correctly', function() {

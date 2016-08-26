@@ -176,6 +176,34 @@ describe('Unit testing teljs directive', function () {
     expect($rootScope.number).toEqual('+298208080');
   });
 
+  it('Formats an international NANPA number correctly', function () {
+    $rootScope.number = '17185605000';
+    var element = $compile('<input type="tel" international="true" ng-model="number">')($rootScope);
+    $rootScope.$digest();
+
+    expect(element.val()).toContain('+1 718-560-5000');
+
+    element.val('17185605000');
+    element.triggerHandler('change');
+    $rootScope.$digest();
+
+    expect($rootScope.number).toEqual('+17185605000');
+  });
+  
+  it('Formats an national NANPA number correctly', function () {
+    $rootScope.number = '+17185605000';
+    var element = $compile('<input type="tel" international="false" default-area-code="1" ng-model="number">')($rootScope);
+    $rootScope.$digest();
+
+    expect(element.val()).toContain('(718) 560-5000');
+
+    element.val('17185605000');
+    element.triggerHandler('change');
+    $rootScope.$digest();
+
+    expect($rootScope.number).toEqual('+17185605000');
+  });
+
   it('handles unset value correctly', function () {
     var element = $compile('<input type="tel" international="true" ng-model="number">')($rootScope);
     $rootScope.$digest();
