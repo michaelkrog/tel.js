@@ -34,6 +34,7 @@ describe('Unit testing teljs directive', function () {
 
   });
 
+
   it('does not format an invalid danish national number correctly', function () {
     $rootScope.number = '12341234';
     $compile('<form name="myform"><input name="number" type="tel" international="false" default-area-code="45" ng-model="number"></form>')($rootScope);
@@ -70,6 +71,21 @@ describe('Unit testing teljs directive', function () {
   it('Formats a danish number correctly', function () {
     $rootScope.number = '4522334455';
     var element = $compile('<input type="tel" international="true" ng-model="number">')($rootScope);
+    $rootScope.$digest();
+
+    expect(element.val()).toContain('+45 22 33 44 55');
+    expect($rootScope.number).toEqual('+4522334455');
+
+    element.val('4522334455');
+    element.triggerHandler('change');
+    $rootScope.$digest();
+
+    expect($rootScope.number).toEqual('+4522334455');
+  });
+
+  it('Formats a danish number correctly as international when international is not specified.', function () {
+    $rootScope.number = '4522334455';
+    var element = $compile('<input type="tel" ng-model="number">')($rootScope);
     $rootScope.$digest();
 
     expect(element.val()).toContain('+45 22 33 44 55');

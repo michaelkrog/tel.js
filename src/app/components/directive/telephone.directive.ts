@@ -32,7 +32,7 @@ class TelephoneController {
   }
 
   private initializeProperties() {
-    this.international = angular.isDefined(this.attrs.international) && this.attrs.international === 'true';
+    this.international = !angular.isDefined(this.attrs.international) || this.attrs.international === 'true';
     this.defaultAreaCode = this.attrs.defaultAreaCode;
 
     if (this.international) {
@@ -60,7 +60,7 @@ class TelephoneController {
       var trimmedResult = '+' + Util.trimNumber(this.doFormatNumber(value, Mode.E164).number);
       if (trimmedResult !== value) {
         this.ngModel.$$rawModelValue = trimmedResult;
-        this.scope.$evalAsync(() {
+        this.scope.$evalAsync(() => {
           this.ngModel.$$parseAndValidate();
         });
       }

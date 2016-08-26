@@ -1,7 +1,7 @@
 
 declare var i18n;
 
-interface FormatResult {
+export interface FormatResult {
     number: string;
     valid: boolean;
 }
