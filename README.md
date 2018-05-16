@@ -6,20 +6,20 @@ Based on metadata from libphonenumber.
 
 Demo: http://michaelkrog.github.io/tel.js/
  
-###Used by###
-[Skveege](http://skveege.com)
+### Used by
+[Previsto](https://previsto.com)
 ...and others. 
 
-#FILTER#
+# FILTER
 
-###Usage###
+### Usage
 
-####In HTML Template Binding####
+#### In HTML Template Binding
 ```html
 {{phonenumber_expression | telephone}}
 ```
 
-####In Javascript####
+#### In Javascript
 ```javascript
 $filter('telephone')(phonenumber, mode, defaultAreaCode, returnObject);
 ```
@@ -35,7 +35,7 @@ returnObject (optional)    | boolean   | If true the result will be an object of
 
 #DIRECTIVE#
 
-###Usage###
+### Usage
 Load the tel.js module:
 ```html
 angular.module('<your module>', ['teljs']);
@@ -49,7 +49,7 @@ Use the directive as follows:
     [default-area-code=""]>
 ```
 
-###Arguments###
+### Arguments
 Param                      | Type      | Details
 ---------------------------|-----------|----------------------
 ngModel                    | string    | Assignable angular expression to data-bind to.
@@ -57,7 +57,7 @@ international (optional)   | string    | Wether number should be formatted as 'e
 defaultAreaCode (optional) | string    | If specified phonenumbers from this area will be formatted even without an areacode.
 
 
-#Install#
+# Install
 
 You can install tel.js via bower like this:
 ```
@@ -67,7 +67,7 @@ bower install teljs --save
 Alternatively you can download the full source as a ZIP file from [Github](https://github.com/michaelkrog/tel.js/archive/master.zip).
 
 
-#FILE FORMAT#
+# FILE FORMAT
 The metadatalite.js file is taken directly from the libphonenumber repository. The format is defined by Google protobuf definitions and is therefore not very human readable. The following is a partial definition of the format - enough to build tel.js around the file.
 
 __It is two Objects__
